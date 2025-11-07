@@ -46,13 +46,13 @@ cd GitBetter
 ```bash
 cd server
 npm install
-npm start
+npm run dev
 ```
 ### 3️⃣ Setup Frontend
 ```bash
 cd client
 npm install
-npm start
+npm run dev
 ```
 ### 4️⃣ Environment Variables
 Create a .env file inside the server/ directory and include:
