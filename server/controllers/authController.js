@@ -78,7 +78,7 @@ export const LogIn = async (req, res) => {
     }
 
     const access_token=createAccessToken(username);
-    const refresh_token=createAccessToken(username);
+    const refresh_token=createRefreshToken(username);
 
     res.status(200).json({
         body:
@@ -91,55 +91,64 @@ export const LogIn = async (req, res) => {
     })
 }
 
-export const refreshAccessToken = async(req, res) => {
-    const {token} = req.body;
-    if (!token)
+export const refreshAccessToken = async(refresh_token) => {
+    console.log("Refresh Token"+refresh_token);
+    if (!refresh_token)
     {
-        return res.status(400).json({
+        return {
             body: {
                 message: "Missing token"
             },
             success: false
-        })
+        }
     }
 
     try {
-        const decoded=jwt.verify(token, process.env.refresh_token_secret);
+        console.log("Refresh token secret : "+process.env.refresh_token_secret);
+
+        const decoded=jwt.verify(refresh_token, process.env.refresh_token_secret);
         const {username}=decoded;
 
         const user=await User.findOne({username});
         if (!user)
         {
-            return res.json({
+            return {
                 body: {
                     message: "User not found"
                 },
                 success: false
-            })
+            }
         }
 
         const access_token=createAccessToken(username)
-        const refresh_token=createRefreshToken(username)
+        refresh_token=createRefreshToken(username)
         
-        return res.json({
+        return {
             body : {
                 message: "Access token successfully refreshed",
                 access_token,
                 refresh_token
             },
             success: true
-        })
+        }
     }
     catch (err)
     {
         console.log(err);
-        return res.json({
+        return {
             body: {
                 message: err.message,
-                token
+                refresh_token
             },
             success: false
-        })
+        }
     }  
+}
+
+export const implementRefreshAccessToken = async (req, res) => {
+    console.log(req.headers);
+    const token=req.headers.x_refresh_token;
+    const result=await refreshAccessToken(token)
+    res.json(result);
 }
 
