@@ -1,10 +1,23 @@
-import { User } from "../models/User";
-import { createAccessToken, createRefreshToken } from "../utils/tokenUtils";
+import { User } from "../models/User.js";
+import { createAccessToken, createRefreshToken } from "../utils/tokenUtils.js";
 import jwt from "jsonwebtoken";
+import bcrypt from 'bcryptjs'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 export const SignUp = async(req, res) => {
     try{
-    const {username, password}=req.body
+    const {username, password}=req.body;
+    const userExists=await User.findOne({username})
+    if (userExists) {
+        return res.json({
+            body: {
+                message: "Username already exists",
+            },
+            success: false
+        })
+    }
     const hashedPassword=await bcrypt.hash(password, 10);
 
     const user=new User({
@@ -16,7 +29,7 @@ export const SignUp = async(req, res) => {
     const access_token=createAccessToken(username);
     const refresh_token=createRefreshToken(username);
 
-    res.status(201).json({
+    return res.status(201).json({
         body: {
             message: "User successfully created",
             access_token,
@@ -26,7 +39,8 @@ export const SignUp = async(req, res) => {
     })
     }
     catch(err) {
-        res.json({
+        console.log(err);
+        return res.json({
             body: {
                 message: err.message
             },
@@ -36,9 +50,10 @@ export const SignUp = async(req, res) => {
 }
 
 export const LogIn = async (req, res) => {
+    console.log("Log in function called")
     const {username, password}=req.body;
 
-    const user=await User.findOne(username);
+    const user=await User.findOne({username});
     if (!user)
     {
         return res.status(404).json({
@@ -50,10 +65,10 @@ export const LogIn = async (req, res) => {
         })
     }
 
-    const passwordMatched=bcrypt.compare(password, user.password);
+    const passwordMatched=await bcrypt.compare(password, user.password);
     if (!passwordMatched)
     {
-        res.status(400).json({
+        return res.status(400).json({
             body:
             {
                 message: "Invalid password"
@@ -62,10 +77,15 @@ export const LogIn = async (req, res) => {
         })
     }
 
-    res.status().json({
+    const access_token=createAccessToken(username);
+    const refresh_token=createAccessToken(username);
+
+    res.status(200).json({
         body:
         {
-            message: "User successfully logged in"
+            message: "User successfully logged in",
+            access_token,
+            refresh_token
         },
         success: true
     })
@@ -75,7 +95,7 @@ export const refreshAccessToken = async(req, res) => {
     const {token} = req.body;
     if (!token)
     {
-        res.status(400).json({
+        return res.status(400).json({
             body: {
                 message: "Missing token"
             },
@@ -84,32 +104,42 @@ export const refreshAccessToken = async(req, res) => {
     }
 
     try {
-        const decoded=jwt.verify(token, process.env.refresh_access_token);
+        const decoded=jwt.verify(token, process.env.refresh_token_secret);
         const {username}=decoded;
 
-        const user=User.findOne(username)
-        access_token=createAccessToken(username)
-        refresh_token=createRefreshToken(username)
+        const user=await User.findOne({username});
+        if (!user)
+        {
+            return res.json({
+                body: {
+                    message: "User not found"
+                },
+                success: false
+            })
+        }
+
+        const access_token=createAccessToken(username)
+        const refresh_token=createRefreshToken(username)
         
-        res.json({
+        return res.json({
             body : {
                 message: "Access token successfully refreshed",
                 access_token,
                 refresh_token
             },
-            success: false
+            success: true
         })
     }
     catch (err)
     {
-        res.json({
+        console.log(err);
+        return res.json({
             body: {
                 message: err.message,
                 token
             },
             success: false
         })
-    }
-
-    
+    }  
 }
+

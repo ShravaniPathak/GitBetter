@@ -1,9 +1,12 @@
-import express from 'express'
 import dotenv from 'dotenv'
+import express from 'express'
 import mongoose from 'mongoose'
+import authRoutes from './routes/authRoutes.js'
+import cors from 'cors'
+import habitRoutes from './routes/HabitRoutes.js'
 
-const app=express()
 dotenv.config()
+const app=express()
 const db_url=process.env.db_url;
 
 const connectDb= async() => {
@@ -16,6 +19,9 @@ const connectDb= async() => {
     }
 }
 
+app.use(cors())
+app.use(express.json())
+
 app.get("/", (req, res) => {
     console.log("Working");
     res.json({
@@ -25,6 +31,9 @@ app.get("/", (req, res) => {
         success: true
     })
 })
+
+app.use("/auth",authRoutes);
+app.use("/habit",habitRoutes);
 
 await connectDb();
 app.listen(5000, ()=> {console.log("Server working")})
