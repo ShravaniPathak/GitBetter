@@ -1,0 +1,157 @@
+/* SignUp.css */
+
+/* SignUp.css - Enhanced page-container */
+
+.page-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  overflow: hidden; /* Ensures nothing spills out of the container */
+
+  /* --- Background Enhancements --- */
+  /* Multiple backgrounds: first a subtle pattern, then a gradient, then a hero image */
+  background-image: 
+    url('https://www.transparenttextures.com/patterns/cubes.png'), /* Subtle texture/pattern */
+    linear-gradient(135deg, #a8c0ff 0%, #3f2b96 100%), /* Gradient for depth */
+    url('https://images.unsplash.com/photo-1517486804-099450a86b16?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'); /* Main inspirational image */
+  
+  /* Background properties for each layer (corresponding to the order above) */
+  background-size: 
+    200px 200px, /* Size for the pattern */
+    cover, /* Cover the container with the gradient */
+    cover; /* Cover the container with the image */
+
+  background-position: 
+    0 0, /* Position for the pattern (top-left) */
+    center center, /* Center the gradient */
+    center center; /* Center the image */
+  
+  background-repeat: 
+    repeat, /* Repeat the pattern */
+    no-repeat, /* Don't repeat the gradient */
+    no-repeat; /* Don't repeat the image */
+
+  /* Blending modes for a more artistic look */
+  background-blend-mode: 
+    overlay, /* Blend pattern with gradient */
+    multiply, /* Blend gradient with image */
+    normal; /* Normal blending for the base image */
+
+  /* Pseudo-element for an overlay (optional, but adds a nice touch) */
+  position: relative; /* Needed for pseudo-elements to position correctly */
+  z-index: 0; /* Ensures content is above the background */
+}
+
+/* Optional: Add a subtle overlay to improve text readability over busy backgrounds */
+.page-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.2); /* Semi-transparent dark overlay */
+  z-index: -1; /* Place behind the content, but above the background image */
+}
+
+/* Keyframe animation for a subtle breathing effect on the background */
+@keyframes backgroundPan {
+  0% {
+    background-position: 0% 0%, center center, center center;
+  }
+  50% {
+    background-position: 5% 5%, center center, center center; /* Slightly shift pattern */
+  }
+  100% {
+    background-position: 0% 0%, center center, center center;
+  }
+}
+
+/* Apply the animation */
+.page-container {
+  animation: backgroundPan 30s infinite alternate ease-in-out;
+}
+
+/* --- You might also want to enhance the card for better contrast --- */
+.signup-card {
+  /* ... (existing styles) ... */
+  background: rgba(255, 255, 255, 0.95); /* Slightly transparent white */
+  backdrop-filter: blur(10px); /* Frosted glass effect */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle white border */
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); /* Stronger, softer shadow */
+}
+.signup-card {
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  max-width: 400px;
+  width: 100%;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+  font-size: 24px;
+}
+
+.input-group {
+  margin-bottom: 20px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #555;
+  font-size: 14px;
+}
+
+.input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  box-sizing: border-box;
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+
+.signup-button {
+  width: 100%;
+  padding: 12px;
+  background: #007bff; /* Primary blue color */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.3s ease;
+}
+
+/* Styles for the message display */
+.message-display {
+  text-align: center;
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+/* Specific styles for success/error messages */
+.message-success {
+  color: #155724; /* Dark green */
+  background-color: #d4edda; /* Light green background */
+  border: 1px solid #c3e6cb;
+}
+
+.message-error {
+  color: #721c24; /* Dark red */
+  background-color: #f8d7da; /* Light red background */
+  border: 1px solid #f5c6cb;
+}

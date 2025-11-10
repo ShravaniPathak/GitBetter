@@ -1,0 +1,138 @@
+/* CreateHabit.css */
+
+/* --- Page Background --- */
+.habit-page-container {
+    min-height: 100vh;
+    padding: 40px 20px;
+    background: #eef2f5; /* Light, calming background */
+}
+
+/* --- Habit Card --- */
+.habit-card {
+    background: #ffffff;
+    border-radius: 16px; /* Smoother corners */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); /* Soft, deep shadow */
+    padding: 30px;
+    transition: transform 0.3s ease;
+}
+
+.habit-card:hover {
+    transform: translateY(-2px); /* Subtle lift on hover */
+}
+
+.card-title {
+    color: #1a202c; /* Darker title text */
+    font-weight: 700;
+    font-size: 1.75rem; /* Larger title */
+    border-bottom: 2px solid #3b82f6; /* Accent border */
+    padding-bottom: 10px;
+}
+
+/* --- Form Elements --- */
+.form-label {
+    display: block;
+    color: #4a5568;
+    font-weight: 600;
+    margin-bottom: 6px;
+    font-size: 0.95rem;
+}
+
+.form-input, .form-select {
+    width: 100%;
+    border: 1px solid #cbd5e0;
+    border-radius: 8px;
+    padding: 10px 14px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-input:focus, .form-select:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2); /* Custom focus ring */
+    outline: none;
+}
+
+/* --- Color Picker Grid --- */
+.color-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+}
+
+.color-option {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%; /* Circle shape */
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 3px solid transparent; /* Placeholder border */
+    position: relative;
+}
+
+.color-option:hover {
+    transform: scale(1.1);
+}
+
+.color-selected {
+    border: 3px solid #1a202c; /* Thick black border for selection */
+    box-shadow: 0 0 0 3px #fff; /* White halo to separate border from color */
+}
+
+/* --- Completions Counter --- */
+.completions-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f7fafc;
+    border: 1px solid #edf2f7;
+    border-radius: 8px;
+    padding: 8px 15px;
+}
+
+.completion-count {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #2d3748;
+}
+
+.increment-btn {
+    background: #48bb78; /* Green button */
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    padding: 4px 12px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.increment-btn:hover {
+    background: #38a169;
+}
+
+/* --- Submit Button --- */
+.submit-btn {
+    width: 100%;
+    background: #3b82f6; /* Primary blue */
+    color: white;
+    font-weight: bold;
+    padding: 12px;
+    border-radius: 8px;
+    transition: background 0.3s, transform 0.1s;
+}
+
+.submit-btn:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
+}
+
+/* --- Message Display --- */
+.message-success {
+    text-align: center;
+    margin-top: 20px;
+    padding: 10px;
+    background: #f0fff4; /* Light mint green */
+    color: #2f855a; /* Dark green text */
+    border-radius: 8px;
+    font-weight: 600;
+}

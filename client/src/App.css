@@ -1,3 +1,9 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "tailwindcss/preflight"; /* replaces @tailwind base */
+@tailwind utilities;
+
+
 #root {
   max-width: 1280px;
   margin: 0 auto;

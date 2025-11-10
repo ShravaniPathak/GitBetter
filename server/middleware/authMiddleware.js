@@ -6,6 +6,7 @@ export const authenticate = async (req, res, next) => {
   try {
     const authHeader = req.headers['authorization'];
     const refreshToken = req.headers['x_refresh_token'];
+    let decoded={username: ""};
 
     if (!authHeader && !refreshToken) {
       return res.status(401).json({ body: { message: "No tokens provided" }, success: false });
@@ -14,8 +15,8 @@ export const authenticate = async (req, res, next) => {
     let access_token = authHeader?.split(" ")[1];
 
     try {
-      const decoded = jwt.verify(access_token, process.env.access_token_secret);
-      req.user = decoded;
+      decoded = jwt.verify(access_token, process.env.access_token_secret);
+      req.user =await User.findOne({username: decoded.username});
       next();
     } catch (err) {
       if (err.name === "TokenExpiredError") {
@@ -25,8 +26,8 @@ export const authenticate = async (req, res, next) => {
           return res.status(401).json({ body: { message: "Refresh token invalid" }, success: false });
         }
 
-        const username = jwt.verify(tokens.body.access_token, process.env.access_token_secret);
-        req.user=User.findOne({username});
+        decoded = jwt.verify(tokens.body.access_token, process.env.access_token_secret);
+        req.user=await User.findOne({username: decoded.username});
 
         next();
     } else {

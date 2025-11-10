@@ -33,7 +33,7 @@ export const SignUp = async(req, res) => {
         body: {
             message: "User successfully created",
             access_token,
-            refresh_token
+            refresh_token,
         },
         success: true
     })
@@ -71,7 +71,7 @@ export const LogIn = async (req, res) => {
         return res.status(400).json({
             body:
             {
-                message: "Invalid password"
+                message: "Invalid password",
             },
             success: false
         })
@@ -85,7 +85,7 @@ export const LogIn = async (req, res) => {
         {
             message: "User successfully logged in",
             access_token,
-            refresh_token
+            refresh_token,
         },
         success: true
     })

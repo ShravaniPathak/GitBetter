@@ -8,6 +8,7 @@ import SignUp from './pages/SignUp.jsx';
 import Login from './pages/Login.jsx';
 import Habits from './pages/Habits.jsx';
 import { AuthProvider, ProtectedRoute } from './context/AuthProvider';
+import Dashboard from './pages/Dashboard';
 
 const router=createBrowserRouter([
   {
@@ -27,6 +28,13 @@ const router=createBrowserRouter([
     element: 
     <ProtectedRoute>
       <Habits />
+    </ProtectedRoute>
+  },
+  {
+    path: "/dashboard",
+    element: 
+    <ProtectedRoute>
+      <Dashboard />
     </ProtectedRoute>
   }
 ]) 
