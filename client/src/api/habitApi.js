@@ -54,10 +54,16 @@ export const addTapsAPi = async(habitId) => {
     const res=await response.json();
 
     if (res.success){
-        return res.body.message;
+        return res;
     }
 
     else {
-        return "Oops! Something went wrong!"
+        return {
+            body :
+            {
+                message: "Something went wrong"
+            },
+            success: false
+        }
     }
 }
