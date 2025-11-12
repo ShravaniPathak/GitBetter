@@ -1,25 +1,37 @@
 import React, { useState, useEffect } from "react";
 import { fetchHabitApi, addTapsAPi } from "../api/habitApi.js";
+import Habits from "./Habits.jsx";
+import HabitGrid from "@/components/ContributionGrid.jsx";
 
 function Dashboard() {
   const [habits, setHabits] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    let isMounted = true;
-
-    const getHabits = async () => {
-      try {
-        const res = await fetchHabitApi();
-        if (isMounted) {
+  let isMounted = true;
+  const getHabits = async () => {
+  try {
+      const res = await fetchHabitApi();
+      if (isMounted) {
           setHabits(res);
-        }
-      } catch (err) {
+      }
+    } catch (err) {
         console.error("Error fetching habits:", err);
       } finally {
         if (isMounted) setLoading(false);
       }
-    };
+  };
+
+
+  const onUpdate= () => {
+    getHabits();
+  }
+
+  const handleDeleteHabit = (deletedId) => {
+  setHabits(prev => prev.filter(h => h._id !== deletedId));
+  };
+
+
+  useEffect(() => {
 
     getHabits();
 
@@ -33,11 +45,13 @@ function Dashboard() {
 
   return (
     <div>
+      <Habits />
       <h2>My Habits</h2>
       <ul>
-        {habits.map((habit) => (
+        {/* {habits.map((habit) => (
           <HabitItem key={habit._id} habit={habit} setHabits={setHabits} habits={habits} />
-        ))}
+        ))} */}
+      <HabitGrid habits={habits} onUpdate={onUpdate} onDelete={handleDeleteHabit} />
       </ul>
     </div>
   );

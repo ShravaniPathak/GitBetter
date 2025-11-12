@@ -29,3 +29,4 @@ export function getPeriodRange(goal) {
 
   throw new Error("Invalid habit goal type");
 }
+

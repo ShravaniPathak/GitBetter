@@ -37,7 +37,6 @@ export const createHabit = async (req, res) => {
     }
 }
 
-{/*name, description, color, goal, completions*/}
 
 export const fetchHabit = async(req, res) => {
     try {
@@ -65,66 +64,95 @@ export const fetchHabit = async(req, res) => {
     }
 }
 
-export const addTaps = async(req, res) => {
-    try {
-        const {habitId} = req.body;
-        const habit=await Habits.findById(habitId);
+export const addTaps = async (req, res) => {
+  try {
+    const { habitId } = req.body;
+    const habit = await Habits.findById(habitId);
 
-        const goal=habit.goal;
-        const maxTaps=habit.completions;
-        const {start, end}=getPeriodRange(goal);
-        let message="Congrats of taking a productive step towards your goal!";
-
-        const stamp = habit.timestamps.find(t => t.startDate >= start && t.endDate <= end);
-
-        if (stamp) {
-            if(stamp.taps>=maxTaps) {
-                message="No. of taps exceeding max amount"
-                return res.json({
-                    body : {
-                        message,
-                        habit
-                    },
-                    success: true
-                })
-            }
-
-            stamp.taps+=1;
-            if (stamp.taps==maxTaps)
-            {
-                message="Congrats on successfully achieving your goal!"
-            }
-        }
-
-        else {
-            const periodType=goal.toLowerCase()
-            habit.timestamps.push({
-            startDate: start,
-            endDate: end,
-            periodType, 
-            taps: 1
-            });
-        }
-
-        await habit.save();
-
-        return res.json({
-            body: {
-                message,
-                habit
-            },
-            success: true
-        })
- 
-    }
-    catch (error) {
-        console.log(error);
-        return res.json({
-            body: {
-                message: error.message,
-            },
-            success: false
-        })
+    if (!habit) {
+      return res.status(404).json({
+        success: false,
+        body: { message: "Habit not found" },
+      });
     }
 
+    const goal = habit.goal;
+    const maxTaps = habit.completions;
+    const today = new Date().toISOString().split("T")[0]; 
+
+    const { start, end } = getPeriodRange(goal); 
+    let message = "Congrats on taking a productive step towards your goal!";
+
+    let periodStamp = habit.timestamps.find(
+      t => t.startDate <= new Date() && t.endDate >= new Date()
+    );
+
+    if (periodStamp) {
+      if (periodStamp.totalTaps >= maxTaps) {
+        message = "No. of taps exceeding max amount";
+      } else {
+        periodStamp.totalTaps += 1;
+
+        const todayTaps = periodStamp.tapsPerDay.get(today) || 0;
+        periodStamp.tapsPerDay.set(today, todayTaps + 1);
+
+        if (periodStamp.totalTaps === maxTaps) {
+          message = "Congrats on successfully achieving your goal!";
+        }
+      }
+    } else {
+      const periodType = goal.toLowerCase();
+      periodStamp = {
+        periodType,
+        startDate: start,
+        endDate: end,
+        totalTaps: 1,
+        tapsPerDay: new Map([[today, 1]]),
+      };
+      habit.timestamps.push(periodStamp);
+    }
+
+    await habit.save();
+
+    return res.json({
+      success: true,
+      body: {
+        message,
+        habit,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      body: {
+        message: error.message,
+      },
+    });
+  }
+};
+
+export const deleteHabit = async (req, res) => {
+  try {
+  const {habitId}=req.body;
+
+  const del = await Habits.findByIdAndDelete(habitId)
+
+  return res.json({
+    body : {
+      message: "Successfully deleted habit"
+    },
+    success: true
+  })
+  }
+  catch (error) 
+  {
+    console.log(error);
+    return res.json({
+      body: {
+        message: error.message,
+
+      }
+    })
+  }
 }

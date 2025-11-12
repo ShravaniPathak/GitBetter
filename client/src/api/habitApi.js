@@ -54,10 +54,12 @@ export const addTapsAPi = async(habitId) => {
     const res=await response.json();
 
     if (res.success){
+        console.log(res);
         return res;
     }
 
     else {
+        console.log(res);
         return {
             body :
             {
@@ -65,5 +67,24 @@ export const addTapsAPi = async(habitId) => {
             },
             success: false
         }
+    }
+}
+
+export const deleteHabitApi = async (habitId) => {
+    try {
+        const response=await fetch("http://localhost:5000/habit/delete", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({habitId})
+        })
+
+        const res=await response.json()
+
+        console.log(res);
+        return res.body.message
+    }
+    catch (error) {
+        console.log(error);
+        return error.message
     }
 }
