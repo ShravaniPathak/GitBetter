@@ -127,18 +127,18 @@ const HabitGrid = ({ habits, onUpdate, onDelete }) => {
 
         return (
           <div className="my-[50px]">
-          <Card key={habit._id} className="p-6 rounded-lg bg-white dark:bg-slate-900 text-[oklch(0.145_0_0)] border-gray-950 border-8 shadow-[0_1px_3px_0_oklch(0_0_0/0.1)]">
+          <Card key={habit._id} className="p-6 rounded-lg bg-white border-gray-100! border-2! shadow-[0_1px_3px_0_oklch(0_0_0/0.1)]">
             {/* Header */}
-            <div className="flex items-start justify-between mb-6">
+            <div className="flex items-start justify-between m-6!">
               <div className="flex items-center gap-3">
                 <div
                   className="w-3 h-3 rounded-full"
                   style={{ backgroundColor: habit.color }}
                 />
-                <div>
-                  <h3 className="text-slate-900 dark:text-slate-50 font-semibold">
+                <div className=" items-start justify-items-start">
+                  <p className="text-slate-900 dark:text-slate-50 font-semibold">
                     {habit.name}
-                  </h3>
+                  </p>
                   <p className="text-slate-600 dark:text-slate-400 text-sm capitalize">
                     {habit.goal} goal
                   </p>
@@ -151,12 +151,13 @@ const HabitGrid = ({ habits, onUpdate, onDelete }) => {
                   variant="outline"
                   disabled={loading[habit._id]}
                   onClick={() => handleAddTap(habit._id)}
+                  className="border! border-gray-300! px-2! rounded-sm!"
                 >
                   {loading[habit._id] ? "Adding..." : "+ Add Tap"}
                 </Button>
 
                 {/* Delete button */}
-                <AlertDialog>
+                <AlertDialog >
                   <AlertDialogTrigger asChild>
                     <Button
                       variant="ghost"
@@ -165,20 +166,23 @@ const HabitGrid = ({ habits, onUpdate, onDelete }) => {
                     >
                       <Trash2 className="w-4 h-4" />
                     </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
+                  </AlertDialogTrigger >
+                  <AlertDialogContent >
                     <AlertDialogHeader>
-                      <AlertDialogTitle>Delete habit?</AlertDialogTitle>
-                      <AlertDialogDescription>
+                      <AlertDialogTitle className="mx-auto! mt-4!">Delete habit?</AlertDialogTitle>
+                      <AlertDialogDescription className="ml-6! mt-4!">
                         This will permanently delete "{habit.name}" and all its
                         data. This action cannot be undone.
                       </AlertDialogDescription>
                     </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogFooter className="flex justify-end gap-2 ">
+                      <AlertDialogCancel className="border! border-gray-300! px-4! mb-4! rounded-sm!">
+                        Cancel
+                      </AlertDialogCancel>
                       <AlertDialogAction
-                        onClick={async e => {
-                          const res=await deleteHabitApi(habit._id)
+                        className="border! border-gray-300! px-4! mb-4! rounded-sm! mr-4!"
+                        onClick={async () => {
+                          const res = await deleteHabitApi(habit._id);
                           setDeleteMessage(res);
                           if (onDelete) onDelete(habit._id);
                         }}
@@ -192,8 +196,8 @@ const HabitGrid = ({ habits, onUpdate, onDelete }) => {
             </div>
 
             {/* Stats section */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-              <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 m-6! ">
+              <div className="bg-slate-100 dark:bg-slate-900 rounded-lg p-4 py-2!">
                 <div className="text-slate-600 dark:text-slate-400 text-sm mb-1">
                   Your taps
                 </div>
@@ -202,7 +206,7 @@ const HabitGrid = ({ habits, onUpdate, onDelete }) => {
                 </div>
               </div>
 
-              <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4">
+              <div className="bg-slate-100 dark:bg-slate-900 rounded-lg p-4 py-2!">
                 <div className="text-slate-600 dark:text-slate-400 text-sm mb-1">
                   Total
                 </div>
@@ -211,7 +215,7 @@ const HabitGrid = ({ habits, onUpdate, onDelete }) => {
                 </div>
               </div>
 
-              <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4">
+              <div className="bg-slate-100 dark:bg-slate-900 rounded-lg p-4 py-2!">
                 <div className="text-slate-600 dark:text-slate-400 text-sm mb-1 flex items-center gap-1">
                   <TrendingUp className="w-3 h-3" />
                   Current Streak
@@ -224,13 +228,13 @@ const HabitGrid = ({ habits, onUpdate, onDelete }) => {
 
             {/* Message */}
             {message[habit._id] && (
-              <p className="text-sm text-green-600 mb-3">
+              <p className="text-sm text-green-600 mb-3!">
                 {message[habit._id]}
               </p>
             )}
 
             {/* Contribution Grid */}
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto m-6!">
               <div className="inline-block w-full">
                 {/* Month headers */}
                 <div className="flex mb-2 text-xs text-slate-600 dark:text-slate-400">
@@ -257,7 +261,7 @@ const HabitGrid = ({ habits, onUpdate, onDelete }) => {
 
                 <div className="flex">
                   {/* Day labels */}
-                  <div className="flex flex-col justify-between pr-2 text-xs text-slate-600 dark:text-slate-400">
+                  <div className="flex flex-col justify-between pr-2 text-xs text-slate-600 dark:text-slate-400 mr-2!">
                     {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(
                       (d) => (
                         <div key={d} className="h-3">

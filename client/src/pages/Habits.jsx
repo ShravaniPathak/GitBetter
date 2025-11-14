@@ -19,7 +19,6 @@ import {
 } from "@/components/ui/select";
 import { createHabitApi } from "../api/habitApi";
 import { AuthContext } from "../context/AuthProvider.jsx";
-import Logout from "../components/Logout.jsx";
 
 export default function Habits({onHabitCreated}) {
   const { access_token, loading, isAuthenticated } = useContext(AuthContext);
@@ -74,9 +73,8 @@ export default function Habits({onHabitCreated}) {
 
   return (
     <>
-      <Logout />
-      <div className="fixed top-4 right-4">
-        <Button onClick={() => setOpen(true)} className="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition">
+      <div className="fixed top-4 right-20">
+        <Button onClick={() => setOpen(true)} className="px-2! py-2! bg-gray-800! text-white! rounded-lg! shadow hover:bg-gray-800 transition text-sm!">
           + Add New Habit
         </Button>
 
@@ -87,7 +85,7 @@ export default function Habits({onHabitCreated}) {
               bg-white
               rounded-xl
               shadow-xl
-              p-6
+              p-6!
               flex
               flex-col
               items-center
@@ -97,8 +95,8 @@ export default function Habits({onHabitCreated}) {
               py-6
             "
           >
-            <DialogHeader className="text-center">
-              <DialogTitle className="text-xl font-semibold text-gray-800">
+            <DialogHeader className="text-center ">
+              <DialogTitle className="text-l! font-normal text-gray-800 text-center mb-3!">
                 Create a New Habit
               </DialogTitle>
               <DialogDescription>
@@ -119,7 +117,7 @@ export default function Habits({onHabitCreated}) {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
-                  className="w-full"
+                  className="w-full p-4! mt-1!"
                 />
               </div>
 
@@ -132,7 +130,7 @@ export default function Habits({onHabitCreated}) {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   required
-                  className="w-full"
+                  className="w-full p-4! mt-1!"
                 />
               </div>
 
@@ -144,9 +142,10 @@ export default function Habits({onHabitCreated}) {
                     <button
                       key={c}
                       type="button"
-                      className={`w-8 h-8 rounded-md border-2 transition-transform hover:scale-110 ${
-                        color === c ? "border-black" : "border-gray-200"
-                      }`}
+                      className={`
+                        w-8 h-8 rounded-md border-2 transition-transform transform hover:scale-110
+                        ${color === c ? "border-black ring-2 ring-offset-1 ring-gray-400" : "border-gray-200"}
+                      `}
                       style={{ backgroundColor: c }}
                       onClick={() => setColor(c)}
                     />
@@ -199,12 +198,14 @@ export default function Habits({onHabitCreated}) {
                   type="button"
                   variant="outline"
                   onClick={() => setOpen(false)}
+                  className="border! border-gray-200! px-2!"
                 >
                   Cancel
                 </Button>
                 <Button
                   type="submit"
                   disabled={!name.trim() || !description.trim()}
+                  className="border! border-gray-200! px-2! ml-3!"
                 >
                   Create Habit
                 </Button>

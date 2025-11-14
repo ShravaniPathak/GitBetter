@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { LogInApi } from '../api/authApi';
 import '../css/Auth.css'; 
+import { useNavigate } from 'react-router';
 
 function Login() {
+  const navigate=useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -19,6 +21,10 @@ function Login() {
     // Call the API
     const res = await LogInApi(username, password);
     setMessage(res);
+
+    // await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    // navigate("/dashboard");
   };
 
   // Helper function to dynamically set the message class (same logic as before)

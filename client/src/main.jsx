@@ -36,7 +36,7 @@ const router=createBrowserRouter([
     <ProtectedRoute>
       <Dashboard />
     </ProtectedRoute>
-  }
+  },
 ]) 
 
 createRoot(document.getElementById('root')).render(
