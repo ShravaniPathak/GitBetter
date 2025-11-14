@@ -21,7 +21,7 @@ import { createHabitApi } from "../api/habitApi";
 import { AuthContext } from "../context/AuthProvider.jsx";
 import Logout from "../components/Logout.jsx";
 
-export default function Habits() {
+export default function Habits({onHabitCreated}) {
   const { access_token, loading, isAuthenticated } = useContext(AuthContext);
 
   const [open, setOpen] = useState(false);
@@ -33,16 +33,16 @@ export default function Habits() {
   const [message, setMessage] = useState("");
 
   const colorOptions = [
-    "#A61212",
-    "#E67E22",
-    "#F1C40F",
-    "#27AE60",
-    "#2980B9",
-    "#8E44AD",
-    "#2C3E50",
-    "#D35400",
-    "#1ABC9C",
-    "#C0392B",
+    "#BD2222",
+    "#F5811B",
+    "#004D40",
+    "#191970",
+    "#8524A6",
+    "#008080",
+    "#BE3144",
+    "#E86320",
+    "#800020",
+    "#915119",
   ];
 
   const handleCreateHabit = async (e) => {
@@ -55,6 +55,8 @@ export default function Habits() {
     setColor("#A61212");
     setGoal("Daily");
     setOpen(false);
+
+    if (onHabitCreated) onHabitCreated();
   };
 
   const option= (goal) => {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { addTapsAPi, deleteHabitApi } from "../api/habitApi";
-import { generateMonochromaticPalette } from "@/utils/habitUtils";
+import { generateMonochromaticPalette, generatePalette } from "@/utils/habitUtils";
 import {
   AlertDialog,
   AlertDialogTrigger,
@@ -124,11 +124,10 @@ const HabitGrid = ({ habits, onUpdate, onDelete }) => {
 
         const currentPeriod = getCurrentPeriod();
         const yourTaps = currentPeriod ? currentPeriod.totalTaps : 0;
-        const monthCompletions = habit.monthCompletions || 0;
 
         return (
-          <div>
-          <Card key={habit._id} className="p-6 border shadow-sm ">
+          <div className="my-[50px]">
+          <Card key={habit._id} className="p-6 rounded-lg bg-white dark:bg-slate-900 text-[oklch(0.145_0_0)] border-gray-950 border-8 shadow-[0_1px_3px_0_oklch(0_0_0/0.1)]">
             {/* Header */}
             <div className="flex items-start justify-between mb-6">
               <div className="flex items-center gap-3">
@@ -270,7 +269,7 @@ const HabitGrid = ({ habits, onUpdate, onDelete }) => {
 
                   {/* Grid */}
                   <div
-                    className="grid gap-[2px] flex-1"
+                    className="grid gap-0.5 flex-1"
                     style={{
                       gridTemplateColumns: `repeat(${weeks.length}, minmax(0, 1fr))`,
                       gridAutoFlow: "column",
@@ -279,7 +278,7 @@ const HabitGrid = ({ habits, onUpdate, onDelete }) => {
                     {weeks.map((week, weekIndex) => (
                       <div
                         key={weekIndex}
-                        className="grid gap-[2px]"
+                        className="grid gap-0.5"
                         style={{ gridTemplateRows: "repeat(7, 1fr)" }}
                       >
                         {Array.from({ length: 7 }).map((_, dayIndex) => {
@@ -338,24 +337,20 @@ const HabitGrid = ({ habits, onUpdate, onDelete }) => {
 
                 {/* Legend */}
                 <div className="flex items-center gap-2 mt-4 text-xs text-slate-600 dark:text-slate-400">
-                  <span>Less</span>
-                  {[0, 0.25, 0.5, 0.75, 1].map((opacity, i) => (
-                    <div
-                      key={i}
-                      className="w-3 h-3 rounded-sm border border-slate-200 dark:border-slate-800"
-                      style={{
-                        backgroundColor:
-                          opacity > 0 ? habit.color : "transparent",
-                        opacity: opacity > 0 ? opacity : 1,
-                      }}
-                    />
-                  ))}
-                  <span>More</span>
+                    <span>Less</span>
+                    {generatePalette(habit.color, Math.min(habit.completions, 5)).map((color, i) => (
+                      <div
+                        key={i}
+                        className="w-3 h-3 rounded-sm border border-slate-200 dark:border-slate-800"
+                        style={{ backgroundColor: color }}
+                      />
+                    ))}
+                    <span>More</span>
                 </div>
               </div>
             </div>
           </Card>
-          <div className="p-25"> </div>
+          <div className="m-25 text-transparent">.</div>
           </div>
         );
       })}

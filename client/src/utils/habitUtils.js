@@ -61,21 +61,44 @@ export const rgbToHex = (r, g, b) => {
     return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 }
 
-export const generateMonochromaticPalette = (hexCode, numberOfColors, noOfTaps) => {
-    if (numberOfColors===noOfTaps) {
-        return hexCode;
-    }
+export const generatePalette = (hexCode, numberOfColors) => {
     const { r, g, b } = hexToRgb(hexCode);
     const { h, s, l } = rgbToHsl(r, g, b);
 
     const palette = [];
+
+    const lightnessRange = 40; 
+    const saturationRange = 20;
+
+    const minL = l;
+    const maxL = Math.min(95, l + lightnessRange);
+    const minS = Math.max(20, s - saturationRange / 2);
+    const maxS = Math.min(100, s + saturationRange / 2);
+
     for (let i = 0; i < numberOfColors; i++) {
-        const newL = Math.max(0, Math.min(100, l + (i - Math.floor(numberOfColors / 2)) * 10)); 
-        const { r: newR, g: newG, b: newB } = hslToRgb(h, s, newL);
+        const t = i / (numberOfColors - 1); 
+        const newL = minL + t * (maxL - minL);
+        const newS = maxS - t * (maxS - minS);
+
+        const { r: newR, g: newG, b: newB } = hslToRgb(h, newS, newL);
         palette.push(rgbToHex(newR, newG, newB));
     }
-    palette.reverse();
-    const color=palette[noOfTaps];
-    console.log("Palette color generated : "+color);
+    palette.reverse()
+    // console.log("Palette"+palette);
+    return palette;
+}
+
+export const generateMonochromaticPalette = (hexCode, numberOfColors, taps) => {
+    const noOfTaps=taps-1
+    const palette=generatePalette(hexCode, numberOfColors);
+    // console.log("Palette"+palette)
+    let color=palette[noOfTaps];
+    
+    if (numberOfColors===noOfTaps) {
+      color=palette[palette.length-1]
+    }
+    
+    // console.log("Palette color generated : "+color);
     return color;
 }
+
