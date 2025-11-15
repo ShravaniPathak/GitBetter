@@ -1,11 +1,11 @@
-export const SignUpApi = async (username, password) => {
+export const SignUpApi = async (email, username, password) => {
     try{
         const response = await fetch("http://localhost:5000/auth/signup", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({ email, username, password })
         });
 
         const res=await response.json();

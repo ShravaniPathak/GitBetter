@@ -28,7 +28,7 @@ function Login() {
   };
 
   // Helper function to dynamically set the message class (same logic as before)
-  const getMessageClass = (msg) => {
+  const getMessageClass = async (msg) => {
     if (!msg) return '';
     const lowerMsg = msg.toLowerCase();
     
@@ -36,6 +36,10 @@ function Login() {
     if (lowerMsg.includes("success") || lowerMsg.includes("logged in")) {
       return 'message-display message-success';
     } 
+    if (lowerMsg.includes("not found")) {
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+      navigate('/signup')
+    }
     return 'message-display message-error';
   };
 

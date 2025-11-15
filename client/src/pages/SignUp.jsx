@@ -1,26 +1,29 @@
 import { useState } from 'react';
 import { SignUpApi } from "../api/authApi.js"; 
 import '../css/Auth.css'; 
+import { useNavigate } from 'react-router';
 
 function SignUp() {
+  const navigate=useNavigate()
   const [message, setMessage] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [email, setEmail]=useState("");
 
   const handleSignUp = async (e) => {
     e.preventDefault(); 
     
-    if (!username || !password) {
-      setMessage("Error: Please enter both username and password.");
+    if (!username || !password || !email) {
+      setMessage("Error: Please enter email, username and password.");
       return;
     }
 
-    const res = await SignUpApi(username, password);
+    const res = await SignUpApi(email, username, password);
     setMessage(res);
   };
 
   // Helper function to dynamically set the message class
-  const getMessageClass = (msg) => {
+  const getMessageClass = async (msg) => {
     if (!msg) return '';
     const lowerMsg = msg.toLowerCase();
     
@@ -28,6 +31,12 @@ function SignUp() {
     if (lowerMsg.includes("success") || lowerMsg.includes("created")) {
       return 'message-display message-success';
     } 
+
+    if (lowerMsg.includes("exists"))
+    {
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+      navigate('/login')
+    }
     // All other messages are treated as errors/warnings
     return 'message-display message-error';
   };
@@ -37,6 +46,20 @@ function SignUp() {
     <div className="page-container">
       <div className="signup-card">
         <h2 className="title">👋 Create Your Account</h2>
+
+        {/* Email Input Group */}
+        <div className="input-group">
+          <label htmlFor="email" className="label">Email</label>
+          <input 
+            id="email"
+            type="text" 
+            placeholder='Enter your email id' 
+            required 
+            onChange={e => setEmail(e.target.value)} 
+            className="input"
+          />
+        </div>
+
         
         {/* Username Input Group */}
         <div className="input-group">
